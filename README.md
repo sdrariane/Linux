@@ -27,7 +27,7 @@ touch monitor.sh
 nano monitor.sh
 ```
 ------------
-```
+```shell
 # Arquivo Shell Script
 # !/bin/bash
 now=$(date)
