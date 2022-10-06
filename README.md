@@ -9,7 +9,7 @@
 
 [🔗 Como utilizar o Iptables (Netfilter)](https://terminalroot.com.br/2014/11/como-utilizar-o-iptables-netfilter.html)
 
-```
+```bash
 iptables -A INPUT -p tcp --destination-port 80 -j ACCEPT
 iptables -A INPUT -p tcp --destination-port 8080 -j ACCEPT
 iptables -A INPUT -p tcp --destination-port 422 -j ACCEPT
@@ -21,7 +21,7 @@ iptables -L
 
 <p><b>07.</b> Criar um script (/home/root/monitor.sh) que colete informações do sistema como: hora atual da coleta dos dados; tempo decorrido desde o último reboot; ocupação do disco e suas partições; memória total e ocupada; usuários logados sistema.</p>
 
-```
+```bash
 # Linux Terminal
 touch monitor.sh
 nano monitor.sh
