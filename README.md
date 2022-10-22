@@ -40,6 +40,86 @@ user_login=$(who)
 echo -e "Usuários que estão logados:\n$user_login"
 ```
 
-<p><b>08.</b> Faça o agendamento deste script usando o serviço cron/crontab para que a partir do boot do sistema, ele colete estas informações periodicamente a cada 10 minutos, somente nos dias uteis de trabalho (segunda a sexta-feira). As informações atuais coletadas, devem ser concatenadas às coletadas em iterações anteriores. Estas informações devem ser persistidas no arquivo /var/log/monitor.log.</p>
+<p><b>08.</b>  Faça o agendamento deste script usando o serviço cron/crontab para que a partir do boot do sistema, ele <b>colete estas informações periodicamente a cada 10 minutos, somente nos dias uteis de trabalho (segunda a sexta-feira)</b>.</p>
+
+
+```bash
+0,10,20,30,40,50 * * * 1-5
+```
+
+---
+[🔗 Editor de Expressão Crontab](https://crontab.guru/#0,10,20,30,40,50_*_*_*_1-5) | [🔗 Texto sobre Agendamento Linux](https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-ubuntu-1804-pt)
+
+As informações atuais coletadas, devem ser concatenadas às coletadas em iterações anteriores.
+
+```bash
+bash [script_a_ser_executado] >> [script_que_contém_registros]
+```
+
+---
+[🔗 Linux Append Text | Concatenamento de Texto Linux](https://www.cyberciti.biz/faq/linux-append-text-to-end-of-file/)
+
+Estas informações devem ser persistidas no arquivo /var/log/monitor.log.
+
+```bash
+# linux terminal
+cd /
+cd var
+cd log
+touch monitor.log
+nano monitor.log
+```
+---
+```bash
+# file
+crontab -e
+0,10,20,30,40,50 * * * 1-5 bash /home/username/monitor.sh >> /var/log/monitor.log
+```
+
+[🔗 Como encontrar o "caminho" de arquivos](https://www.tecmint.com/35-practical-examples-of-linux-find-command/) | [🔗 EasyCron](https://www.easycron.com/user) | [🔗 Como usar o Crontab](https://www.youtube.com/watch?v=Qf5SPjHzvyw)
+
 <p><b>09.</b> Instalar o serviço de proxy usando o squid e crie regras de bloqueio dos sites de redes sociais como: facebook; youtube; instagram.</p>
 
+```bash
+# instalando o squid, faça estando no root /home/username
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt install squid
+
+# para verificar se deu tudo certo
+sudo systemctl status squid
+
+# só dar CTRL+C para sair
+```
+
+---
+```bash
+agora vamos configurar o squid
+cd /etc/squid
+sudo cp squid.conf squid.conf_old
+sudo nano squid.conf
+
+# ai você encontra a parte do 'INCLUDE' no arquivo e logo abaixo escreve
+acl block dstdomain "https://net.cloudinfrastructureservices.co.uk/etc/squid/website_block.txt"
+http_access deny block
+```
+
+---
+```bash
+# vamos criar o arquivo website_block.txt
+nano /etc/squid/website_block.txt
+
+# vamos definir os websites que devem ser bloqueados
+.facebook.com
+.twitter.com
+.lyoutube.com
+.instagram.com
+```
+
+---
+```bash
+# dar restart para aplicar as modificações
+systemctl restart squid
+```
+
+[🔗 Configurando o Squid](https://cloudinfrastructureservices.co.uk/how-to-block-websites-using-squid-proxy-server/)
