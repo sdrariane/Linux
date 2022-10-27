@@ -242,3 +242,33 @@ nano /etc/hosts
 ```
 
 [🔗 Configurando o Squid - Parte I](https://cloudinfrastructureservices.co.uk/how-to-block-websites-using-squid-proxy-server/) | [🔗 Configurando o Squid - Parte II](https://www.youtube.com/watch?v=YIuiyKihehA) | [🔗 Configurando o Proxy - Alternativa](https://www.youtube.com/watch?v=SH7RoalsjdQ)
+
+---
+<h3> Prevenindo o Reboot do SO </h3>
+
+<h4>✦ Alternativa I </h4>
+<p> Vamos fazer manualmente aqui: </p>
+
+```bash
+/etc/sysctl.conf
+
+# escreva isso aqui no rquivo
+net.ipv4.ip_forward = 1
+sysctl -p /etc/sysctl.conf
+
+# volta pro terminal e acessa esse arquivo aqui
+/etc/rc.local
+
+# escreve isso aqui no arquivo
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+```
+
+<h4>✦ Alternativa II </h4>
+<p> Aqui vamos instalar uma libzinha/package-do-bem: </p>
+
+```bash
+sudo apt install molly-guard
+```
+
+[🔗 Lib/package-do-bem do Reboot](https://www.2daygeek.com/how-to-avoid-or-prevent-accidental-shutdown-or-reboot-on-linux/)
