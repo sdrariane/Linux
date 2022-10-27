@@ -22,23 +22,27 @@ iptables -L
 <p><b>07.</b> Criar um script (/home/root/monitor.sh) que colete informações do sistema como: hora atual da coleta dos dados; tempo decorrido desde o último reboot; ocupação do disco e suas partições; memória total e ocupada; usuários logados sistema.</p>
 
 ```bash
-# Linux Terminal
+# Linux Terminal ./home/username
 touch monitor.sh
 nano monitor.sh
 ```
 ------------
 ```shell
-# Arquivo Shell Script
+# Arquivo Shell Script ./home/username
 # !/bin/bash
 now=$(date)
-echo "Data e Hora atuais: $now"
-last_reboot=$(awk '{print int($1/3600)":"int(($1%3600)/60)":"int($1%60)}' /proc/uptime)
-echo "Tempo decorrido desde o último reboot: "
+echo -e "\nData e Hora atuais: $now\n"
+last_reboot=$(last reboot)
+echo -e "Tempo decorrido desde o último reboot: \n$(las_reboot)\n"
 disk_usage=$(df -H --output=source,size,used,avail,pcent)
-echo -e "Uso de Disco: \n$disk_usage"
+echo -e "Uso de Disco: \n$disk_usage\n"
 user_login=$(who)
-echo -e "Usuários que estão logados:\n$user_login"
+echo -e "Usuários que estão logados:\n$user_login\n"
 ```
+
+<p> E o output fica assim: </p>
+
+<img src='shelloutput.png'/>
 
 <p><b>08.</b>  Faça o agendamento deste script usando o serviço cron/crontab para que a partir do boot do sistema, ele <b>colete estas informações periodicamente a cada 10 minutos, somente nos dias uteis de trabalho (segunda a sexta-feira)</b>.</p>
 
@@ -62,19 +66,30 @@ bash [script_a_ser_executado] >> [script_que_contém_registros]
 Estas informações devem ser persistidas no arquivo /var/log/monitor.log.
 
 ```bash
-# linux terminal
+# linux terminal 
 cd /
 cd var
 cd log
 touch monitor.log
-nano monitor.log
+crontab -e
 ```
 ---
 ```bash
-# file
-crontab -e
-0,10,20,30,40,50 * * * 1-5 bash /home/username/monitor.sh >> /var/log/monitor.log
+# aarquivo editável do crontab
+0,10,20,30,40,50 * * * 1-5 /home/username/monitor.sh >> /var/log/monitor.log
 ```
+
+<p> Arquivo Crontab </p>
+
+<img src='crontab.png'/>
+
+<p> Output da rotina criada </p>
+
+```bash
+cat /var/log/monitor.log
+```
+
+<img src='crontabloutput.png'/>
 
 [🔗 Como encontrar o "caminho" de arquivos](https://www.tecmint.com/35-practical-examples-of-linux-find-command/) | [🔗 EasyCron](https://www.easycron.com/user) | [🔗 Como usar o Crontab](https://www.youtube.com/watch?v=Qf5SPjHzvyw)
 
