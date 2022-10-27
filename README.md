@@ -21,6 +21,36 @@ iptables -L
 
 <img src='iptables.png'/>
 
+<p> Agora temos que salvar tudo isso para quando der o reboot continuar lá bonitinho pra gente: </p>
+
+```bash
+# salve as regras no arquivo input-rules-1 cujo nome pode ser o que você quiser
+iptables-save > input-rules-1
+
+# visualizar as regras salvas, mas se formos reinicializar o sistema, essas regras serão perdidas e teremos que restaurar do arquivo input-rules-1. Para tornar essas regras permanentes, temos que salvá-las no arquivo '/etc/sysconfig/iptables'. Primeiro verifique se este arquivo contém algumas regras ou não.
+cat input-rules-1
+
+# salve o arquivo de regras '/etc/sysconfig/iptables'. Pesquise o arquivo com o comando 'grep' - dessa forma podemos observar que as regras foram salvas neste arquivo
+service iptables save
+```
+
+<img src='iptables-save.png'/>
+
+<p> 💩 deu erro `iptables: unrecognized service` </p>
+
+```bash
+sudo /sbin/iptables-save
+
+```
+
+<p> 💩 a pasta 'sysconfig' não existe </p>
+
+```py
+# aplique o TGU - Teorema da Gambiarra Universitária - e crie as pastas necessárias pelo comando mkdir
+```
+
+[🔗 Salvar configuração](https://www.youtube.com/watch?v=eKbm7A0Ur7k) | [🔗 Unrecognized Service Error](https://www.altaruru.com/iptables-unrecognized-service/)
+
 <p><b>07.</b> Criar um script (/home/root/monitor.sh) que colete informações do sistema como: hora atual da coleta dos dados; tempo decorrido desde o último reboot; ocupação do disco e suas partições; memória total e ocupada; usuários logados sistema.</p>
 
 ```bash
@@ -115,7 +145,11 @@ agora vamos configurar o squid
 cd /etc/squid
 sudo cp squid.conf squid.conf_old
 sudo nano squid.conf
+```
 
+<h3>★ Alternativa I </h3>
+
+```bash
 # ai você encontra a parte do 'INCLUDE' no arquivo e logo abaixo escreve
 acl block dstdomain "https://net.cloudinfrastructureservices.co.uk/etc/squid/website_block.txt"
 http_access deny block
@@ -137,6 +171,74 @@ nano /etc/squid/website_block.txt
 ```bash
 # dar restart para aplicar as modificações
 systemctl restart squid
+```
+
+---
+<h3>★ Alternativa II </h3>
+
+```bash
+# squid.conf
+acl rede_interna src [seu ip]
+
+acl sites_bloqueados url_regex -i "/etc/squid/sites_bloqueados"
+acl palavras_bloqueadas url_regex -i "/etc/squid/palavras_bloqueadas"
+
+http_access deny sites_bloqueados
+http_access deny palavras_bloqueadas
+
+http_access allow rede_interna
+http_access deny all
+```
+
+<p> Configure o arquivo com os sites a serem bloqueados </p>
+
+```bash
+# sites_bloqueados
+www.facebook.com
+facebook.com
+
+www.instagram.com
+instagram.com
+
+www.youtube.com
+youtube.com
+```
+
+<p> Configure o arquivo com as palavras a serem bloqueadas </p>
+
+```bash
+# palavras_bloqueadas
+facebook
+instagram
+youtube
+```
+
+<p> Dê restart no srvio exatamente para ele salvar e aplicar as configurações </p>
+
+```bash
+# linux terminal /etc/squid
+sudo systemctl restart squid.service
+```
+
+---
+<h3>★ Alternativa III </h3>
+
+```bash
+sudo su
+nano /etc/hosts
+```
+
+<p> Configure o arquivo com os sites a serem bloqueados </p>
+
+```bash
+0.0.0.0 www.facebook.com
+0.0.0.0 facebook.com
+
+0.0.0.0 www.instagram.com
+0.0.0.0 instagram.com
+
+0.0.0.0 www.youtube.com
+0.0.0.0 youtube.com
 ```
 
 [🔗 Configurando o Squid - Parte I](https://cloudinfrastructureservices.co.uk/how-to-block-websites-using-squid-proxy-server/) | [🔗 Configurando o Squid - Parte II](https://www.youtube.com/watch?v=YIuiyKihehA) | [🔗 Configurando o Proxy - Alternativa](https://www.youtube.com/watch?v=SH7RoalsjdQ)
