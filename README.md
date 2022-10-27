@@ -19,6 +19,8 @@ iptables -A INPUT -p tcp --syn -j DROP
 iptables -L
 ```
 
+<img src='iptables.png'/>
+
 <p><b>07.</b> Criar um script (/home/root/monitor.sh) que colete informações do sistema como: hora atual da coleta dos dados; tempo decorrido desde o último reboot; ocupação do disco e suas partições; memória total e ocupada; usuários logados sistema.</p>
 
 ```bash
@@ -89,7 +91,7 @@ crontab -e
 cat /var/log/monitor.log
 ```
 
-<img src='crontabloutput.png'/>
+<img src='crontaboutput.png'/>
 
 [🔗 Como encontrar o "caminho" de arquivos](https://www.tecmint.com/35-practical-examples-of-linux-find-command/) | [🔗 EasyCron](https://www.easycron.com/user) | [🔗 Como usar o Crontab](https://www.youtube.com/watch?v=Qf5SPjHzvyw)
 
