@@ -139,4 +139,4 @@ nano /etc/squid/website_block.txt
 systemctl restart squid
 ```
 
-[🔗 Configurando o Squid](https://cloudinfrastructureservices.co.uk/how-to-block-websites-using-squid-proxy-server/)
+[🔗 Configurando o Squid - Parte I](https://cloudinfrastructureservices.co.uk/how-to-block-websites-using-squid-proxy-server/) | [🔗 Configurando o Squid - Parte II](https://www.youtube.com/watch?v=YIuiyKihehA) | [🔗 Configurando o Proxy - Alternativa](https://www.youtube.com/watch?v=SH7RoalsjdQ)
